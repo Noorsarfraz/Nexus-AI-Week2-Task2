@@ -1,8 +1,4 @@
-Yeh lijiye aapke **NexusAI** project ke liye aik mukammal, professional aur detailed **`README.md`** file ka content. Aap isay apne project ki root directory mein mojood `README.md` file mein copy paste kar ke save kar dein.
 
----
-
-```markdown
 # NexusAI - Real-Time AI Server & Analytics Terminal
 
 NexusAI is a modern full-stack web application designed for monitoring live AI server nodes, tracking real-time telemetry metrics, managing secure user authentication sessions, and executing server operations.
