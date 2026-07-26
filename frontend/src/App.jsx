@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Features from './components/Features';
@@ -8,10 +9,26 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import AIServerMonitor from './components/AIServerMonitor';
 
+// Import Pages
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
+import DashboardPage from './pages/DashboardPage';
+import ProfilePage from './pages/ProfilePage';
+import SettingsPage from './pages/SettingsPage';
+import BillingPage from './pages/BillingPage';
+import AnalyticsPage from './pages/AnalyticsPage';
+import ModelsPage from './pages/ModelsPage';
+import ApiKeysPage from './pages/ApiKeysPage';
+
 export default function App() {
+  // Page load ya refresh hone par bilkul top par le kar janay ke liye
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, []);
+  
+
+  // sessionStorage se authentication check kar rahe hain
+  const [isAuthenticated, setIsAuthenticated] = useState(!!sessionStorage.getItem('token'));
 
   const [analyticsData] = useState([
     { id: "rev", title: "Total Revenue API", value: "$84,259.00", trend: "↑ +14.2%", isPositive: true, subtext: "vs last month" },
@@ -26,19 +43,42 @@ export default function App() {
   ]);
 
   return (
-    <div className="bg-[#030712] text-slate-200 selection:bg-brand-primary/30 selection:text-white antialiased overflow-x-hidden w-full">
-      <Navbar />
-      
-      <main className="w-full flex flex-col gap-16">
-        <Hero analyticsData={analyticsData} />
-        <Features featuresList={featuresList} />
-        <AIServerMonitor />
-        <About />
-        <Pricing />
-        <Contact />
-      </main>
+    <Router>
+      <Routes>
+        {/* Public Landing Page */}
+        <Route path="/" element={
+          <div className="bg-[#030712] text-slate-200 selection:bg-brand-primary/30 selection:text-white antialiased overflow-x-hidden w-full">
+            <Navbar isAuthenticated={isAuthenticated} />
+            <main className="w-full flex flex-col gap-16">
+              <Hero analyticsData={analyticsData} />
+              <Features featuresList={featuresList} />
+              <AIServerMonitor />
+              <About />
+              <Pricing />
+              <Contact />
+            </main>
+            <Footer />
+          </div>
+        } />
 
-      <Footer />
-    </div>
+        {/* Authentication Pages */}
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/login" element={<LoginPage setIsAuthenticated={setIsAuthenticated} />} />
+
+        {/* Protected Pages (Logout par ab seedha 1st page '/' par bhejenge) */}
+        <Route path="/dashboard" element={isAuthenticated ? <DashboardPage setIsAuthenticated={setIsAuthenticated} /> : <Navigate to="/" />} />
+        <Route path="/profile" element={isAuthenticated ? <ProfilePage /> : <Navigate to="/" />} />
+        <Route path="/settings" element={isAuthenticated ? <SettingsPage /> : <Navigate to="/" />} />
+        <Route path="/billing" element={isAuthenticated ? <BillingPage /> : <Navigate to="/" />} />
+        
+        {/* Other Pages */}
+        <Route path="/analytics" element={<AnalyticsPage />} />
+        <Route path="/models" element={<ModelsPage />} />
+        <Route path="/api-keys" element={<ApiKeysPage />} />
+        
+        {/* Catch-all Redirect */}
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </Router>
   );
 }

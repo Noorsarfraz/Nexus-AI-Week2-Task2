@@ -1,22 +1,32 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from './Button';
 
-export default function Navbar() {
+export default function Navbar({ isAuthenticated }) {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleAuthAction = () => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    } else {
+      navigate('/login');
+    }
+  };
 
   return (
     <nav className="fixed top-4 left-1/2 -translate-x-1/2 w-[92%] max-w-7xl z-50 bg-[#030712]/80 backdrop-blur-xl border border-slate-800/80 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.8)] transition-all duration-300">
       <div className="px-6 h-16 flex items-center justify-between">
         
         {/* Brand Identity */}
-        <div className="flex items-center gap-3 cursor-pointer group">
+        <Link to="/" className="flex items-center gap-3 cursor-pointer group">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-primary via-indigo-600 to-purple-600 flex items-center justify-center font-black text-white text-lg shadow-[0_0_20px_rgba(99,102,241,0.4)] group-hover:scale-105 transition-transform duration-300">
             N
           </div>
           <span className="text-xl font-black text-white tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text">
             Nexus<span className="text-brand-primary">AI</span>
           </span>
-        </div>
+        </Link>
 
         {/* Structural Desktop Menu Layout */}
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
@@ -28,7 +38,13 @@ export default function Navbar() {
         </div>
         
         <div className="hidden md:block">
-          <Button variant="secondary" className="px-5 py-2.5 text-xs">Access Terminal</Button>
+          {/* Dynamic Button Base on Auth State */}
+          <button 
+            onClick={handleAuthAction}
+            className="px-5 py-2.5 text-xs bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors cursor-pointer border border-slate-700 font-medium"
+          >
+            {isAuthenticated ? 'Go to Dashboard' : 'Access Terminal'}
+          </button>
         </div>
 
         {/* Mobile Navbar State Toggle */}
@@ -71,7 +87,12 @@ export default function Navbar() {
             <span className="text-xs text-brand-primary font-mono">→</span>
           </a>
           <div className="pt-2">
-            <Button variant="primary" className="w-full py-3 text-center justify-center">Access Terminal</Button>
+            <button 
+              onClick={() => { setIsOpen(false); handleAuthAction(); }}
+              className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg transition-colors cursor-pointer text-center justify-center font-medium"
+            >
+              {isAuthenticated ? 'Go to Dashboard' : 'Access Terminal'}
+            </button>
           </div>
         </div>
       )}

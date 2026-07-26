@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from './Button';
 import Metrics from './Metrics';
 import heroIllustration from '../assets/hero-illustration.png';
 
 export default function Hero({ analyticsData }) {
+  // Component load hotay hi page ko bilkul top par le aane ke liye
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, []);
+
   return (
     <section className="relative max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-16 sm:pt-28 pb-16 flex flex-col items-center justify-center overflow-hidden w-full">
       
@@ -21,7 +26,7 @@ export default function Hero({ analyticsData }) {
         <div className="col-span-7 lg:col-span-6 flex flex-col items-start text-left">
           
           {/* Floating Glass Component Badge */}
-          <div className="inline-flex items-center gap-1.5 bg-slate-950/40 backdrop-blur-md text-slate-300 px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-semibold mb-3 border border-slate-800/60 shadow-sm">
+          <div className="inline-flex items-center gap-1.5 bg-slate-950/45 backdrop-blur-md text-slate-300 px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-semibold mb-3 border border-slate-800/60 shadow-sm">
             <span className="relative flex h-1.5 w-1.5 sm:h-2 sm:w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-primary opacity-75"></span>
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 sm:h-2 sm:w-2 bg-brand-primary"></span>
