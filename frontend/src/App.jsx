@@ -52,7 +52,6 @@ export default function App() {
             <main className="w-full flex flex-col gap-16">
               <Hero analyticsData={analyticsData} />
               <Features featuresList={featuresList} />
-              <AIServerMonitor />
               <About />
               <Pricing />
               <Contact />
